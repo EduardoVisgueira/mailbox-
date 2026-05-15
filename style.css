@@ -2,7 +2,10 @@
   box-sizing: border-box;
   font-family: Verdana, Arial, sans-serif;
   color: #b1b1b1;
-  cursor: url('ponteiro.png') 0 0, auto;
+}
+
+*, *:hover, a, a:hover, button, button:hover, input, textarea, select, label {
+  cursor: url('ponteiro.png') 0 0, auto !important;
 }
 
 body {
