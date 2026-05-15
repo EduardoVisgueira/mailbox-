@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ezrealm - editar perfil</title>
+  <link id="themeStylesheet" rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+
+<div class="page" style="height: auto; overflow-y: visible;">
+<div class="content-area">
+
+  <main class="layout">
+    <aside class="left">
+      <div class="box">
+        <h3>perfil</h3>
+        <a href="#"><img id="sb-avatar" src="icon-dark.jpeg"></a>
+        <strong><a href="#" id="sb-nick"> @... </a></strong>
+        <small id="sb-nome">...</small>
+        <hr>
+        <p><i id="sb-quote">"..."</i><br>
+        <small><i id="sb-status">Online agora</i></small></p>
+        <p><a href="inbox.html">← voltar</a></p>
+      </div>
+      <div class="box">
+        <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
+      </div>
+    </aside>
+
+    <section class="center">
+      <div class="box">
+        <h2>✦ editar perfil</h2>
+        <div style="padding: 5px;">
+
+          <label style="font-size: 10px;">nick:</label><br>
+          <input type="text" id="f-nick" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">nome:</label><br>
+          <input type="text" id="f-nome" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">quote:</label><br>
+          <input type="text" id="f-quote" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">status:</label><br>
+          <input type="text" id="f-status" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">mood:</label><br>
+          <input type="text" id="f-mood" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">now playing:</label><br>
+          <input type="text" id="f-now-playing" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">url do avatar:</label><br>
+          <input type="text" id="f-avatar-url" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">url do banner:</label><br>
+          <input type="text" id="f-banner-url" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">bio:</label><br>
+          <textarea id="f-bio" rows="4" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px; font-family:monospace; resize:vertical;"></textarea>
+
+          <label style="font-size: 10px;">filmes favoritos (separados por vírgula):</label><br>
+          <input type="text" id="f-favs-filmes" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">músicas favoritas (separadas por vírgula):</label><br>
+          <input type="text" id="f-favs-musicas" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <label style="font-size: 10px;">animes favoritos (separados por vírgula):</label><br>
+          <input type="text" id="f-favs-animes" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+
+          <button id="btn-salvar" onclick="salvarPerfil()">salvar</button>
+          <span id="msg-status" style="font-size:10px; margin-left:8px;"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</div>
+</div>
+
+<script>
+let userId;
+
+async function init() {
+  const { data: { session } } = await window.db.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  userId = session.user.id;
+
+  const { data: perfil } = await window.db.from('profiles').select('*').eq('id', userId).single();
+  if (!perfil) return;
+
+  document.getElementById('f-nick').value           = perfil.nick || '';
+  document.getElementById('f-nome').value           = perfil.nome || '';
+  document.getElementById('f-quote').value          = perfil.quote || '';
+  document.getElementById('f-status').value         = perfil.status || '';
+  document.getElementById('f-mood').value           = perfil.mood || '';
+  document.getElementById('f-now-playing').value    = perfil.now_playing || '';
+  document.getElementById('f-avatar-url').value     = perfil.avatar_url || '';
+  document.getElementById('f-banner-url').value     = perfil.banner_url || '';
+  document.getElementById('f-bio').value            = perfil.bio || '';
+  document.getElementById('f-favs-filmes').value    = perfil.favs_filmes || '';
+  document.getElementById('f-favs-musicas').value   = perfil.favs_musicas || '';
+  document.getElementById('f-favs-animes').value    = perfil.favs_animes || '';
+
+  if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
+  document.getElementById('sb-nick').textContent   = perfil.nick || '';
+  document.getElementById('sb-nome').textContent   = perfil.nome || '';
+  document.getElementById('sb-quote').textContent  = `"${perfil.quote || ''}"`;
+  document.getElementById('sb-status').textContent = perfil.status || 'Online agora';
+}
+
+async function salvarPerfil() {
+  const btn = document.getElementById('btn-salvar');
+  const msg = document.getElementById('msg-status');
+  btn.disabled = true;
+  btn.textContent = 'salvando...';
+
+  const { error } = await window.db.from('profiles').update({
+    nick:          document.getElementById('f-nick').value,
+    nome:          document.getElementById('f-nome').value,
+    quote:         document.getElementById('f-quote').value,
+    status:        document.getElementById('f-status').value,
+    mood:          document.getElementById('f-mood').value,
+    now_playing:   document.getElementById('f-now-playing').value,
+    avatar_url:    document.getElementById('f-avatar-url').value,
+    banner_url:    document.getElementById('f-banner-url').value,
+    bio:           document.getElementById('f-bio').value,
+    favs_filmes:   document.getElementById('f-favs-filmes').value,
+    favs_musicas:  document.getElementById('f-favs-musicas').value,
+    favs_animes:   document.getElementById('f-favs-animes').value,
+    updated_at:    new Date().toISOString()
+  }).eq('id', userId);
+
+  if (error) {
+    msg.style.color = '#ff6060';
+    msg.textContent = 'erro ao salvar :(';
+  } else {
+    msg.style.color = '#80ff80';
+    msg.textContent = 'salvo ✦';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'salvar';
+}
+
+window.onload = init;
+</script>
+
+</body>
+</html>
