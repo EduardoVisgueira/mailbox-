@@ -56,9 +56,28 @@
         <p style="padding:10px;">Carregando mensagens...</p>
         </div>
 </div>
-<div class="box">
-<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2LKOHdMsL0K9KwcPRlJK2v?utm_source=generator&theme=0" width="100%" height="80px" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<div class="box" style="height: 100px;">
+<iframe id="spotify-player" data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2LKOHdMsL0K9KwcPRlJK2v?utm_source=generator&theme=0" width="100%" height="80px" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<div style="display:flex; justify-content:space-between; align-items:center; padding-top:2px; font-size:10px;">
+  <a href="#" onclick="prevTrack(); return false;">← anterior</a>
+  <span id="track-counter">1 / 2</span>
+  <a href="#" onclick="nextTrack(); return false;">próxima →</a>
 </div>
+</div>
+<script>
+const tracks = [
+  '2LKOHdMsL0K9KwcPRlJK2v',  // Mr.Kitty - After Dark
+  'COLE_ID_DA_HIM_AQUI'      // HIM - Join Me in Death
+];
+let currentTrack = 0;
+function updatePlayer() {
+  document.getElementById('spotify-player').src =
+    `https://open.spotify.com/embed/track/${tracks[currentTrack]}?utm_source=generator&theme=0`;
+  document.getElementById('track-counter').textContent = `${currentTrack + 1} / ${tracks.length}`;
+}
+function nextTrack() { currentTrack = (currentTrack + 1) % tracks.length; updatePlayer(); }
+function prevTrack() { currentTrack = (currentTrack - 1 + tracks.length) % tracks.length; updatePlayer(); }
+</script>
       </section>
     </main>
 </div>

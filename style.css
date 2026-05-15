@@ -19,6 +19,7 @@ body {
 .page {
   position: relative;
   margin: 0 auto;
+  margin-top: -40px;
   width: 800px;
   height: 600px;
   border-radius: 5px;
