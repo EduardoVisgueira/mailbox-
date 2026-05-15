@@ -125,7 +125,8 @@ async function carregarCaixaDeEntrada() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
     currentUserId = session.user.id;
-    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
+    const { error: lsErr } = await window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
+    if (lsErr) console.error('last_seen update failed:', lsErr.message);
     setInterval(() => {
         window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
     }, 60000);

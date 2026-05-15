@@ -213,6 +213,7 @@
         <small>☆ <a href="inbox.html">voltar à inbox</a> &nbsp;·&nbsp;
         <a href="v.write.html">enviar carta</a> ☆
         <span class="blink accent"> ♥</span></small>
+        <br><small style="color:#555; font-size:9px;">logado como <span id="logado-como" style="color:#8f90aa;">...</span></small>
       </div>
 
     </section>
@@ -245,7 +246,8 @@ async function carregarPerfil() {
 
   const { data: { session } } = await window.db.auth.getSession();
   if (session) {
-    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
+    const { error: lsErr } = await window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
+    if (lsErr) console.error('last_seen update failed:', lsErr.message);
   }
 
   try {
@@ -291,6 +293,11 @@ async function carregarPerfil() {
     let visits = parseInt(localStorage.getItem(visitKey) || '0') + 1;
     localStorage.setItem(visitKey, visits);
     document.getElementById('visit-count').textContent = String(visits).padStart(3, '0');
+
+    if (session) {
+      const meuPerfil = profiles.find(p => p.id === session.user.id);
+      if (meuPerfil) document.getElementById('logado-como').textContent = meuPerfil.nick || session.user.email;
+    }
 
     montarAmigos(profiles, nickAlvo);
 
