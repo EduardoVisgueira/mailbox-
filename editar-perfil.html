@@ -52,9 +52,12 @@
           <label style="font-size: 10px;">now playing:</label><br>
           <input type="text" id="f-now-playing" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
 
-          <label style="font-size: 10px;">avatar: <small style="color:#8f90aa;">(clica na foto pra trocar)</small></label><br>
+          <label style="font-size: 10px;">avatar:</label><br>
           <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
-            <img id="avatar-preview" src="icon-dark.jpeg" onclick="document.getElementById('f-avatar-file').click()" style="width:64px; height:64px; object-fit:cover; border:1px solid #8f90aa; cursor:pointer !important; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+            <label for="f-avatar-file" style="cursor:pointer !important; display:block;">
+              <img id="avatar-preview" src="icon-dark.jpeg" style="width:64px; height:64px; object-fit:cover; border:1px solid #8f90aa; display:block;" title="clica pra trocar a foto">
+              <small style="color:#8f90aa; font-size:9px; display:block; text-align:center;">clica pra trocar</small>
+            </label>
             <div style="flex:1;">
               <input type="text" id="f-avatar-url" placeholder="ou cole uma url aqui" oninput="atualizarPreview()" style="width:100%; margin-bottom:4px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
               <input type="file" id="f-avatar-file" accept="image/*" onchange="uploadAvatar()" style="display:none;">
