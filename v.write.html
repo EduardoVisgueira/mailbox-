@@ -56,10 +56,10 @@
 </div>
 
 <script>
-async function enviarMensagem(remetente, titulo, mensagem) {
+async function enviarMensagem(remetente, titulo, mensagem, senderId) {
     const { error } = await window.db
         .from('messages')
-        .insert([{ titulo, remetente, conteudo: mensagem }]);
+        .insert([{ titulo, remetente, conteudo: mensagem, sender_id: senderId }]);
     if (error) throw error;
     alert("mensagem enviada :3");
 }
@@ -78,8 +78,9 @@ async function prepararEnvio() {
     btnEnviar.textContent = "enviando...";
     btnEnviar.disabled = true;
 
+    const { data: { session } } = await window.db.auth.getSession();
     let mensagemFormatada = inputMensagem.value.replace(/\n/g, '<br>');
-    await enviarMensagem(inputRemetente.value, inputTitulo.value, mensagemFormatada);
+    await enviarMensagem(inputRemetente.value, inputTitulo.value, mensagemFormatada, session?.user?.id);
 
     inputRemetente.value = '';
     inputTitulo.value = '';

@@ -90,6 +90,7 @@ async function logout() {
 }
 
 let meuNick = '';
+let currentUserId = '';
 
 async function carregarSidebar(userId) {
     const { data: perfil } = await window.db
@@ -112,6 +113,7 @@ async function deletarMensagem(id, el) {
 async function carregarCaixaDeEntrada() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
+    currentUserId = session.user.id;
     await carregarSidebar(session.user.id);
 
     const container = document.querySelector('.entries');
@@ -134,7 +136,7 @@ async function carregarCaixaDeEntrada() {
 
     messages.forEach(msg => {
         const date = new Date(msg.created_at).toLocaleDateString('pt-BR');
-        const isMeu = msg.remetente === meuNick;
+        const isMeu = msg.sender_id === currentUserId;
         const entryHtml = `
             <div class="entries-grid" style="position:relative;">
                 <img src="files-dark.png">
