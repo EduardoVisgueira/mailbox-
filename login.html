@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div class="page" style="height: auto; max-height: 340px;">
+<div class="page" style="height: auto; overflow-y: visible;">
 <div class="content-area">
 
   <main class="layout">
@@ -30,19 +30,14 @@
       </div>
     </aside>
 
-    <section class="center">
-      <div class="box" style="height:100px">
-        <img src="h1.png" style="width:100%">
-      </div>
-      <div class="box">
+    <section class="center" style="justify-content: center;">
+      <div class="box" style="margin-top: auto; margin-bottom: auto;">
         <h2>✦ entrar</h2>
         <div style="padding: 5px;">
           <label style="font-size: 10px;">email:</label><br>
-          <input type="email" id="campo-email" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
-
+          <input type="email" id="campo-email" style="width: 100%; margin-bottom: 6px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
           <label style="font-size: 10px;">senha:</label><br>
-          <input type="password" id="campo-senha" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
-
+          <input type="password" id="campo-senha" style="width: 100%; margin-bottom: 6px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
           <button id="btn-entrar" onclick="fazerLogin()">entrar</button>
           <span id="msg-erro" style="font-size: 10px; color: #ff6060; margin-left: 8px;"></span>
         </div>
