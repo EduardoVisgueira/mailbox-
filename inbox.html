@@ -66,12 +66,16 @@
 </div>
 </div>
 <script>
-const tracks = [
-  '2LKOHdMsL0K9KwcPRlJK2v',  // Mr.Kitty - After Dark
-  '089jl361OtZ6VpYvhgPiTS'  // HIM - Join Me in Death
-];
+let tracks = [];
 let currentTrack = 0;
+function initPlayer(tracksStr) {
+  tracks = (tracksStr || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (!tracks.length) return;
+  currentTrack = 0;
+  updatePlayer();
+}
 function updatePlayer() {
+  if (!tracks.length) return;
   document.getElementById('spotify-player').src =
     `https://open.spotify.com/embed/track/${tracks[currentTrack]}?utm_source=generator&theme=0`;
   document.getElementById('track-counter').textContent = `${currentTrack + 1} / ${tracks.length}`;
@@ -95,7 +99,7 @@ let currentUserId = '';
 
 async function carregarSidebar(userId) {
     const { data: perfil } = await window.db
-        .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', userId).single();
+        .from('profiles').select('nick,nome,quote,status,avatar_url,spotify_tracks').eq('id', userId).single();
     if (!perfil) return;
     meuNick = perfil.nick || '';
     const nickSlug = (perfil.nick || '').replace('@', '');
@@ -108,6 +112,7 @@ async function carregarSidebar(userId) {
     document.getElementById('sb-nome').textContent = perfil.nome || '';
     document.getElementById('sb-quote').textContent = `"${perfil.quote || ''}"`;
     document.getElementById('sb-status').textContent = 'Online agora';
+    initPlayer(perfil.spotify_tracks);
 }
 
 async function deletarMensagem(id, el) {
