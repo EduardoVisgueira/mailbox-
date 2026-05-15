@@ -4,7 +4,16 @@
   color: #b1b1b1;
 }
 
-*, *:hover, a, a:hover, button, button:hover, input, textarea, select, label {
+html, body, *, *::before, *::after,
+*:hover, *:focus, *:active, *:visited, *:disabled,
+a, a:hover, a:visited, a:active,
+button, button:hover, button:disabled,
+input, input:focus, input:hover, input[type="text"], input[type="email"], input[type="password"], input[type="file"], input[type="submit"], input[type="button"],
+textarea, textarea:focus, textarea:hover,
+select, option, label,
+[contenteditable], [contenteditable]:focus,
+img, span, div, p, h1, h2, h3, h4, h5, h6, small, strong, em, i, b, u,
+marquee, iframe {
   cursor: url('ponteiro.png') 0 0, auto !important;
 }
 
