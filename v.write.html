@@ -35,9 +35,8 @@
             <h2>escreva a sua mensagem</h2>
 
             <div style="padding: 5px;">
-                <label style="font-size: 10px;">de: (seu nick)</label><br>
-                <input type="text" id="campo-remetente" list="lista-nicks" autocomplete="off" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
-                <datalist id="lista-nicks"></datalist>
+                <label style="font-size: 10px;">de:</label><br>
+                <input type="text" id="campo-remetente" readonly style="width: 100%; margin-bottom: 8px; background: #1a1a1a; color: #8f90aa; border: 1px solid #8f90aa; padding: 4px; cursor: default;">
 
                 <label style="font-size: 10px;">título da mensagem:</label><br>
                 <input type="text" id="campo-titulo" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
@@ -59,17 +58,6 @@
 </div>
 
 <script>
-async function carregarNicks() {
-    const { data: profiles } = await window.db.from('profiles').select('nick');
-    if (!profiles) return;
-    const datalist = document.getElementById('lista-nicks');
-    profiles.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.nick;
-        datalist.appendChild(opt);
-    });
-}
-
 async function enviarMensagem(remetente, titulo, mensagem) {
     const { error } = await window.db
         .from('messages')
@@ -103,7 +91,14 @@ async function prepararEnvio() {
     btnEnviar.disabled = false;
 }
 
-window.onload = carregarNicks;
+async function init() {
+    const { data: { session } } = await window.db.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const { data: perfil } = await window.db
+        .from('profiles').select('nick').eq('id', session.user.id).single();
+    if (perfil) document.getElementById('campo-remetente').value = perfil.nick;
+}
+window.onload = init;
 </script>
 
 </body>
