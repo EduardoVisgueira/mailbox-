@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>ezrealm</title>
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 </head>
 <body>
@@ -64,23 +65,25 @@
 
 <script>
 async function carregarCarta() {
+    const { data: { session } } = await window.db.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+
     const id = new URLSearchParams(window.location.search).get('id');
     if (!id) return;
 
-    try {
-        const response = await fetch(window.MAILBOX_API + '?action=messages');
-        const messages = await response.json();
-        const carta = messages.find(m => m.id === id);
+    const { data: carta, error } = await window.db
+        .from('messages')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-        if (carta) {
-            document.getElementById('email-titulo').textContent = carta.titulo;
-            document.getElementById('email-corpo').innerHTML = carta.conteudo;
-        } else {
-            document.getElementById('email-corpo').textContent = 'Carta não encontrada.';
-        }
-    } catch (err) {
-        document.getElementById('email-corpo').textContent = 'Erro ao carregar a carta. Tente novamente.';
+    if (error || !carta) {
+        document.getElementById('email-corpo').textContent = 'Carta não encontrada.';
+        return;
     }
+
+    document.getElementById('email-titulo').textContent = carta.titulo;
+    document.getElementById('email-corpo').innerHTML = carta.conteudo;
 }
 window.onload = carregarCarta;
 </script>

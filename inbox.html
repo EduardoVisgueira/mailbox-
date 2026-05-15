@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>ezrealm</title>
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 </head>
 <body>
@@ -85,38 +86,40 @@ function prevTrack() { currentTrack = (currentTrack - 1 + tracks.length) % track
 
 <script>
 async function carregarCaixaDeEntrada() {
+    const { data: { session } } = await window.db.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+
     const container = document.querySelector('.entries');
-    const proxyUrl = "https://corsproxy.io/?";
-    const tsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpmJiwuZljVWoVH019SqmWvnckZz0UgzzNeCygTcmH8ZNRAC7jPBp1P8oX2A4VZMAERtbKGTC_djFg/pub?output=tsv";
+    const { data: messages, error } = await window.db
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    try {
-        const response = await fetch(window.MAILBOX_API + '?action=messages');
-        if (!response.ok) throw new Error('erro na resposta');
-        const messages = await response.json();
-
-        container.innerHTML = '';
-
-        if (!messages.length) {
-            container.innerHTML = '<p style="padding:10px;">Nenhuma mensagem encontrada.</p>';
-            return;
-        }
-
-        messages.forEach(msg => {
-            const entryHtml = `
-                <div class="entries-grid">
-                    <img src="files-dark.png">
-                    <a href="mail.html?id=${encodeURIComponent(msg.id)}">
-                        <h4>${msg.titulo}</h4>
-                        <small>enviado por ${msg.remetente} em ${msg.id.split(' ')[0]}</small>
-                    </a>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', entryHtml);
-        });
-    } catch (error) {
-        console.error("Erro:", error);
+    if (error) {
         container.innerHTML = '<p style="padding:10px;">Erro ao carregar mensagens. Tente atualizar a página.</p>';
+        return;
     }
+
+    container.innerHTML = '';
+
+    if (!messages.length) {
+        container.innerHTML = '<p style="padding:10px;">Nenhuma mensagem encontrada.</p>';
+        return;
+    }
+
+    messages.forEach(msg => {
+        const date = new Date(msg.created_at).toLocaleDateString('pt-BR');
+        const entryHtml = `
+            <div class="entries-grid">
+                <img src="files-dark.png">
+                <a href="mail.html?id=${encodeURIComponent(msg.id)}">
+                    <h4>${msg.titulo}</h4>
+                    <small>enviado por ${msg.remetente} em ${date}</small>
+                </a>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', entryHtml);
+    });
 }
 window.onload = carregarCaixaDeEntrada;
 </script>

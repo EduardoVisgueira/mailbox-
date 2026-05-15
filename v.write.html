@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>ezrealm - Escrever</title>
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 </head>
 <body>
@@ -58,11 +59,10 @@
 
 <script>
 async function enviarMensagem(remetente, titulo, mensagem) {
-    await fetch(window.MAILBOX_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'sendMessage', remetente, titulo, mensagem })
-    });
+    const { error } = await window.db
+        .from('messages')
+        .insert([{ titulo, remetente, conteudo: mensagem }]);
+    if (error) throw error;
     alert("mensagem enviada :3");
 }
 

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>ezrealm - perfil</title>
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <style>
     .perfil-banner {
@@ -225,11 +226,10 @@ async function carregarPerfil() {
   const nickAlvo = new URLSearchParams(window.location.search).get('nick') || 'arataka';
 
   try {
-    const response = await fetch(window.MAILBOX_API + '?action=profiles');
-    const profiles = await response.json();
+    const { data: profiles, error } = await window.db.from('profiles').select('*');
 
-    if (profiles.error) {
-      document.getElementById('bio').textContent = 'erro: ' + profiles.error;
+    if (error) {
+      document.getElementById('bio').textContent = 'erro: ' + error.message;
       return;
     }
 
