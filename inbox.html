@@ -26,6 +26,7 @@
             <br><small> <i>Online agora</small></i></p>
             <p><a href="#"> visitar perfil [EM BREVE]</a></p>
             <p><a href="v.write.html"> enviar uma mensagem</a></p>
+            <p><a href="#" onclick="logout(); return false;">sair</a></p>
             </div>
             <div class="box">
               <marquee>cut me open, leave me in tears</marquee>
@@ -85,6 +86,11 @@ function prevTrack() { currentTrack = (currentTrack - 1 + tracks.length) % track
 </div>
 
 <script>
+async function logout() {
+    await window.db.auth.signOut();
+    window.location.href = 'login.html';
+}
+
 async function carregarCaixaDeEntrada() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
