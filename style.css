@@ -9,11 +9,16 @@ body {
   background-image: url("bg7.gif");
   background-repeat: no-repeat;
   background-size: cover;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page {
   position: relative;
-  margin: 5px auto;
+  margin: 0 auto;
   width: 800px;
   height: 600px;
   border-radius: 5px;
@@ -22,7 +27,6 @@ body {
   flex-direction: column;
   border-style: groove;
   padding: 0px;
-  top: 15%;
 
 }
 
