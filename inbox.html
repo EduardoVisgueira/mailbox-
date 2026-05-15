@@ -89,10 +89,13 @@ async function logout() {
     window.location.href = 'login.html';
 }
 
+let meuNick = '';
+
 async function carregarSidebar(userId) {
     const { data: perfil } = await window.db
         .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', userId).single();
     if (!perfil) return;
+    meuNick = perfil.nick || '';
     if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
     document.getElementById('sb-nick').textContent = perfil.nick || '';
     document.getElementById('sb-nome').textContent = perfil.nome || '';
@@ -100,10 +103,16 @@ async function carregarSidebar(userId) {
     document.getElementById('sb-status').textContent = perfil.status || 'Online agora';
 }
 
+async function deletarMensagem(id, el) {
+    if (!confirm('apagar essa mensagem?')) return;
+    const { error } = await window.db.from('messages').delete().eq('id', id);
+    if (!error) el.closest('.entries-grid').remove();
+}
+
 async function carregarCaixaDeEntrada() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
-    carregarSidebar(session.user.id);
+    await carregarSidebar(session.user.id);
 
     const container = document.querySelector('.entries');
     const { data: messages, error } = await window.db
@@ -125,13 +134,15 @@ async function carregarCaixaDeEntrada() {
 
     messages.forEach(msg => {
         const date = new Date(msg.created_at).toLocaleDateString('pt-BR');
+        const isMeu = msg.remetente === meuNick;
         const entryHtml = `
-            <div class="entries-grid">
+            <div class="entries-grid" style="position:relative;">
                 <img src="files-dark.png">
                 <a href="mail.html?id=${encodeURIComponent(msg.id)}">
                     <h4>${msg.titulo}</h4>
                     <small>enviado por ${msg.remetente} em ${date}</small>
                 </a>
+                ${isMeu ? `<span onclick="deletarMensagem('${msg.id}', this)" title="apagar" style="position:absolute; top:4px; right:6px; font-size:14px; color:#8f90aa; line-height:1;">🗑</span>` : ''}
             </div>
         `;
         container.insertAdjacentHTML('beforeend', entryHtml);
