@@ -144,7 +144,7 @@ async function carregarCaixaDeEntrada() {
                     <h4>${msg.titulo}</h4>
                     <small>enviado por ${msg.remetente} em ${date}</small>
                 </a>
-                ${isMeu ? `<span onclick="event.stopPropagation(); event.preventDefault(); deletarMensagem('${msg.id}', this)" title="apagar" style="position:absolute; top:4px; right:6px; font-size:14px; color:#8f90aa; line-height:1; z-index:10;">🗑</span>` : ''}
+                ${isMeu ? `<span onclick="event.stopPropagation(); event.preventDefault(); deletarMensagem('${msg.id}', this)" title="apagar" style="position:absolute; top:50%; right:8px; transform:translateY(-50%); font-size:18px; color:#8f90aa; z-index:10; padding:4px 5px; border:1px solid transparent; line-height:1;" onmouseover="this.style.borderColor='#8f90aa';this.style.color='#ff6060';" onmouseout="this.style.borderColor='transparent';this.style.color='#8f90aa';">🗑</span>` : ''}
             </div>
         `;
         container.insertAdjacentHTML('beforeend', entryHtml);
