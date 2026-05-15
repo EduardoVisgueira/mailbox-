@@ -52,8 +52,15 @@
           <label style="font-size: 10px;">now playing:</label><br>
           <input type="text" id="f-now-playing" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
 
-          <label style="font-size: 10px;">url do avatar:</label><br>
-          <input type="text" id="f-avatar-url" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+          <label style="font-size: 10px;">avatar:</label><br>
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+            <img id="avatar-preview" src="icon-dark.jpeg" style="width:48px; height:48px; object-fit:cover; border:1px solid #8f90aa;">
+            <div style="flex:1;">
+              <input type="text" id="f-avatar-url" placeholder="url da imagem" oninput="atualizarPreview()" style="width:100%; margin-bottom:4px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
+              <input type="file" id="f-avatar-file" accept="image/*" onchange="uploadAvatar()" style="font-size:10px; color:#b1b1b1;">
+              <span id="msg-upload" style="font-size:10px; color:#8f90aa; margin-left:4px;"></span>
+            </div>
+          </div>
 
           <label style="font-size: 10px;">url do banner:</label><br>
           <input type="text" id="f-banner-url" style="width:100%; margin-bottom:6px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;"><br>
@@ -83,6 +90,30 @@
 <script>
 let userId;
 
+function atualizarPreview() {
+  const url = document.getElementById('f-avatar-url').value;
+  if (url) document.getElementById('avatar-preview').src = url;
+}
+
+async function uploadAvatar() {
+  const file = document.getElementById('f-avatar-file').files[0];
+  if (!file) return;
+  const msg = document.getElementById('msg-upload');
+  msg.textContent = 'enviando...';
+
+  const ext = file.name.split('.').pop();
+  const path = `${userId}.${ext}`;
+
+  const { error } = await window.db.storage.from('avatars').upload(path, file, { upsert: true });
+  if (error) { msg.textContent = 'erro: ' + error.message; return; }
+
+  const { data } = window.db.storage.from('avatars').getPublicUrl(path);
+  document.getElementById('f-avatar-url').value = data.publicUrl;
+  document.getElementById('avatar-preview').src = data.publicUrl;
+  msg.style.color = '#80ff80';
+  msg.textContent = 'foto enviada ✦';
+}
+
 async function init() {
   const { data: { session } } = await window.db.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
@@ -104,7 +135,10 @@ async function init() {
   document.getElementById('f-favs-musicas').value   = perfil.favs_musicas || '';
   document.getElementById('f-favs-animes').value    = perfil.favs_animes || '';
 
-  if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
+  if (perfil.avatar_url) {
+    document.getElementById('sb-avatar').src = perfil.avatar_url;
+    document.getElementById('avatar-preview').src = perfil.avatar_url;
+  }
   document.getElementById('sb-nick').textContent   = perfil.nick || '';
   document.getElementById('sb-nome').textContent   = perfil.nome || '';
   document.getElementById('sb-quote').textContent  = `"${perfil.quote || ''}"`;
