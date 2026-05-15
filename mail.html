@@ -16,14 +16,12 @@
     <aside class="left">
       <div class="box">
             <h3>perfil</h3>
-            <a href="#">
-            <img src="icon-dark.jpeg">
-            </a>
-            <strong><a href="#"> @beyond.you </a></strong>
-            <small>edu</small>
+            <a href="#"><img id="sb-avatar" src="icon-dark.jpeg"></a>
+            <strong><a href="#" id="sb-nick"> @... </a></strong>
+            <small id="sb-nome">...</small>
             <hr>
-            <p> <i> "find hope in the hopeless"</i>
-            <br><small> <i>Online agora</small></i></p>
+            <p><i id="sb-quote">"..."</i>
+            <br><small><i id="sb-status">Online agora</i></small></p>
             </div>
 
             <div class="box">
@@ -64,9 +62,21 @@
 </div>
 
 <script>
+async function carregarSidebar(userId) {
+    const { data: perfil } = await window.db
+        .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', userId).single();
+    if (!perfil) return;
+    if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
+    document.getElementById('sb-nick').textContent = perfil.nick || '';
+    document.getElementById('sb-nome').textContent = perfil.nome || '';
+    document.getElementById('sb-quote').textContent = `"${perfil.quote || ''}"`;
+    document.getElementById('sb-status').textContent = perfil.status || 'Online agora';
+}
+
 async function carregarCarta() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
+    carregarSidebar(session.user.id);
 
     const id = new URLSearchParams(window.location.search).get('id');
     if (!id) return;
