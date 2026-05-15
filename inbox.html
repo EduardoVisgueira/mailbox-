@@ -43,8 +43,8 @@
             </div>
             </aside>
       <section class="center">
-        <div class="box">
-          <img src="h1.png">
+        <div class="box" style="height:100px">
+          <img src="h1.png" style="100%">
         </div>
         <div class="box">
         <strong>bem-vindo ao seu mailbox !!</strong>
@@ -104,7 +104,7 @@ async function carregarCaixaDeEntrada() {
         messages.forEach(msg => {
             const entryHtml = `
                 <div class="entries-grid">
-                    <img src="https://i.pinimg.com/736x/03/bb/ae/03bbaeaa9211660eaef61a01299c8b81.jpg">
+                    <img src="files-dark.png">
                     <a href="mail.html?id=${encodeURIComponent(msg.id)}">
                         <h4>${msg.titulo}</h4>
                         <small>enviado por ${msg.remetente} em ${msg.id.split(' ')[0]}</small>
