@@ -45,16 +45,13 @@
 
        <div class="box">
             <h3>enviado por</h3>
-            <a href="#">
-            <img src="ezreal.jpg">
-            </a>
-            <strong><a href="#"> @arataka </a></strong>
-            <small>vi</small>
+            <a href="#"><img id="remetente-avatar" src="icon-dark.jpeg"></a>
+            <strong><a href="#" id="remetente-nick">@...</a></strong>
+            <small id="remetente-nome">...</small>
             <hr>
-            <p> <i> "higher, higher, to where the skies end"</i>
-            <br><small> <i>Visto pela última vez hoje às 3:58</small></i></p>
-            <a href="#">visitar perfil</a>
-            <br><a href="v.write.html">mandar recado</a>
+            <p><i id="remetente-quote">"..."</i>
+            <br><small><i id="remetente-status">...</i></small></p>
+            <a href="v.write.html">mandar recado</a>
             </div>
 
     </main>
@@ -94,6 +91,19 @@ async function carregarCarta() {
 
     document.getElementById('email-titulo').textContent = carta.titulo;
     document.getElementById('email-corpo').innerHTML = carta.conteudo;
+
+    const { data: remetente } = await window.db
+        .from('profiles').select('nick,nome,quote,status,avatar_url')
+        .eq('nick', carta.remetente).single();
+    if (remetente) {
+        if (remetente.avatar_url) document.getElementById('remetente-avatar').src = remetente.avatar_url;
+        document.getElementById('remetente-nick').textContent = remetente.nick || '';
+        document.getElementById('remetente-nome').textContent = remetente.nome || '';
+        document.getElementById('remetente-quote').textContent = `"${remetente.quote || ''}"`;
+        document.getElementById('remetente-status').textContent = remetente.status || '';
+    } else {
+        document.getElementById('remetente-nick').textContent = carta.remetente;
+    }
 }
 window.onload = carregarCarta;
 </script>
