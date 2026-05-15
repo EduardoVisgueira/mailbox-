@@ -16,12 +16,13 @@
     <aside class="left">
       <div class="box">
             <h3>perfil</h3>
-            <a href="#"><img id="sb-avatar" src="icon-dark.jpeg"></a>
+            <a href="#" id="sb-link-perfil"><img id="sb-avatar" src="icon-dark.jpeg"></a>
             <strong><a href="#" id="sb-nick"> @... </a></strong>
             <small id="sb-nome">...</small>
             <hr>
             <p><i id="sb-quote">"..."</i>
             <br><small><i id="sb-status">Online agora</i></small></p>
+            <p><a href="#" id="sb-link-ver-perfil"> ver perfil</a></p>
             <p><a href="editar-perfil.html"> editar perfil</a></p>
             <p><a href="v.write.html"> enviar uma mensagem</a></p>
             <p><a href="#" onclick="logout(); return false;">sair</a></p>
@@ -32,7 +33,7 @@
             <div class="box">
             <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
             </div>
-            <div class="box" style="height: 100px; text-align: center;">
+            <div class="box" style="height: 100px; text-align: center; margin-bottom: 8px;">
     <h3 style="margin-bottom: 15px; text-align: left;">local time</h3>
     <span id="relogio" style="font-family: monospace; font-size: 20px; color: #ffffff; text-shadow: 0 0 5px rgb(216, 216, 216);">00:00:00</span>
 <script>
@@ -56,9 +57,9 @@
         <p style="padding:10px;">Carregando mensagens...</p>
         </div>
 </div>
-<div class="box" style="height: 100px;">
+<div class="box" style="height: 120px;">
 <iframe id="spotify-player" data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2LKOHdMsL0K9KwcPRlJK2v?utm_source=generator&theme=0" width="100%" height="80px" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-<div style="display:flex; justify-content:space-between; align-items:center; padding-top:2px; font-size:10px;">
+<div style="display:flex; justify-content:space-between; align-items:center; padding-top:6px; font-size:10px;">
   <a href="#" onclick="prevTrack(); return false;">← anterior</a>
   <span id="track-counter">1 / 2</span>
   <a href="#" onclick="nextTrack(); return false;">próxima →</a>
@@ -97,7 +98,12 @@ async function carregarSidebar(userId) {
         .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', userId).single();
     if (!perfil) return;
     meuNick = perfil.nick || '';
+    const nickSlug = (perfil.nick || '').replace('@', '');
+    const perfilUrl = 'perfil.html?nick=' + encodeURIComponent(nickSlug);
     if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
+    document.getElementById('sb-link-perfil').href = perfilUrl;
+    document.getElementById('sb-nick').href = perfilUrl;
+    document.getElementById('sb-link-ver-perfil').href = perfilUrl;
     document.getElementById('sb-nick').textContent = perfil.nick || '';
     document.getElementById('sb-nome').textContent = perfil.nome || '';
     document.getElementById('sb-quote').textContent = `"${perfil.quote || ''}"`;
