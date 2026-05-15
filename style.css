@@ -121,7 +121,13 @@ img {
   max-height: 1000px;
   width: auto;
   max-width: 100%;
+}
 
+#sb-avatar {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
 }
 
 .center {
