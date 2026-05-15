@@ -2,103 +2,104 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>ezrealm - inbox</title>
-  <link rel="stylesheet" href="style.css">
+  <title>ezrealm</title>
+  <link id="themeStylesheet" rel="stylesheet" href="style.css">
   <script src="config.js"></script>
 </head>
 <body>
 
 <div class="page">
 <div class="content-area">
-  <main class="layout">
 
+    <main class="layout">
     <aside class="left">
       <div class="box">
-        <h3>perfil</h3>
-        <img src="icon-dark.jpeg">
-        <strong><a href="#"> @beyond.you </a></strong>
-        <small>edu</small>
-        <hr>
-        <p><i>"find hope in the hopeless"</i><br>
-        <small><i>Online agora</i></small></p>
-        <p><a href="perfil.html">visitar perfil [EM BREVE]</a></p>
-        <p><a href="v.write.html">enviar uma mensagem</a></p>
-      </div>
-      <div class="box">
-        <marquee>cut me open, leave me in tears</marquee>
-      </div>
-      <div class="box">
-        <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
-      </div>
-      <div class="box" style="height:100px; text-align:center;">
-        <h3 style="margin-bottom:15px; text-align:left;">local time</h3>
-        <span id="relogio" style="font-family:monospace; font-size:20px; color:#fff; text-shadow:0 0 5px rgb(216,216,216);">00:00:00</span>
-        <script>
-          setInterval(() => {
-            document.getElementById('relogio').innerHTML = new Date().toLocaleTimeString();
-          }, 1000);
-        </script>
-      </div>
-    </aside>
-
-    <section class="center">
-      <div class="box">
-        <img src="h1.png">
-      </div>
-      <div class="box">
-        <strong>bem-vindo ao seu mailbox !!</strong>
-        <p>essa caixa de entrada para compartilhar algumas coisas! por enquanto tenho VÁRIAS coisas em andamento, mas só de fazer essa gambiarra funcionar já tá bom!! espero que goste :D</p>
-      </div>
-      <div class="box" style="height: 280px;">
-        <h2>Mensagens</h2>
-        <div class="entries">
-          <p style="padding:10px;">Carregando mensagens...</p>
+            <h3>perfil</h3>
+            <a href="#">
+            <img src="icon-dark.jpeg">
+            </a>
+            <strong><a href="#"> @beyond.you </a></strong>
+            <small>edu</small>
+            <hr>
+            <p> <i> "find hope in the hopeless"</i>
+            <br><small> <i>Online agora</small></i></p>
+            <p><a href="#"> visitar perfil [EM BREVE]</a></p>
+            <p><a href="v.write.html"> enviar uma mensagem</a></p>
+            </div>
+            <div class="box">
+              <marquee>cut me open, leave me in tears</marquee>
+            </div>
+            <div class="box">
+            <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
+            </div>
+            <div class="box" style="height: 100px; text-align: center;">
+    <h3 style="margin-bottom: 15px; text-align: left;">local time</h3>
+    <span id="relogio" style="font-family: monospace; font-size: 20px; color: #ffffff; text-shadow: 0 0 5px rgb(216, 216, 216);">00:00:00</span>
+<script>
+    setInterval(() => {
+        document.getElementById('relogio').innerHTML = new Date().toLocaleTimeString();
+    }, 1000);
+</script>
+            </div>
+            </aside>
+      <section class="center">
+        <div class="box">
+          <img src="h1.png">
         </div>
-      </div>
-      <div class="box">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2LKOHdMsL0K9KwcPRlJK2v?utm_source=generator&theme=0" width="100%" height="80px" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-    </section>
-
-  </main>
+        <div class="box">
+        <strong>bem-vindo ao seu mailbox !!</strong>
+        <p> essa caixa de entrada para compartilhar algumas coisas! por enquanto tenho VÁRIAS coisas em andamento, mas só de fazer essa gambiarra funcionar já tá bom!! espero que goste :D </p>
+        </div>
+<div class="box" style="height: 280px;">
+    <h2>Mensagens</h2>
+    <div class="entries">
+        <p style="padding:10px;">Carregando mensagens...</p>
+        </div>
+</div>
+<div class="box">
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2LKOHdMsL0K9KwcPRlJK2v?utm_source=generator&theme=0" width="100%" height="80px" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+      </section>
+    </main>
 </div>
 </div>
 
 <script>
-  const API = window.MAILBOX_API || '';
-
-  async function carregarCaixaDeEntrada() {
+async function carregarCaixaDeEntrada() {
     const container = document.querySelector('.entries');
+    const proxyUrl = "https://corsproxy.io/?";
+    const tsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpmJiwuZljVWoVH019SqmWvnckZz0UgzzNeCygTcmH8ZNRAC7jPBp1P8oX2A4VZMAERtbKGTC_djFg/pub?output=tsv";
+
     try {
-      const response = await fetch(API + '?action=messages');
-      if (!response.ok) throw new Error('erro na resposta');
-      const messages = await response.json();
+        const response = await fetch(window.MAILBOX_API + '?action=messages');
+        if (!response.ok) throw new Error('erro na resposta');
+        const messages = await response.json();
 
-      if (!messages.length) {
-        container.innerHTML = '<p style="padding:10px;">Nenhuma mensagem encontrada.</p>';
-        return;
-      }
+        container.innerHTML = '';
 
-      container.innerHTML = '';
-      messages.forEach(msg => {
-        const data = msg.id.split(' ')[0];
-        container.insertAdjacentHTML('beforeend', `
-          <div class="entries-grid">
-            <img src="https://i.pinimg.com/736x/03/bb/ae/03bbaeaa9211660eaef61a01299c8b81.jpg" alt="">
-            <a href="mail.html?id=${encodeURIComponent(msg.id)}">
-              <h4>${msg.titulo}</h4>
-              <small>enviado por ${msg.remetente} em ${data}</small>
-            </a>
-          </div>
-        `);
-      });
-    } catch (err) {
-      console.error(err);
-      container.innerHTML = '<p style="padding:10px;">Erro ao carregar mensagens. Tente atualizar a página.</p>';
+        if (!messages.length) {
+            container.innerHTML = '<p style="padding:10px;">Nenhuma mensagem encontrada.</p>';
+            return;
+        }
+
+        messages.forEach(msg => {
+            const entryHtml = `
+                <div class="entries-grid">
+                    <img src="https://i.pinimg.com/736x/03/bb/ae/03bbaeaa9211660eaef61a01299c8b81.jpg">
+                    <a href="mail.html?id=${encodeURIComponent(msg.id)}">
+                        <h4>${msg.titulo}</h4>
+                        <small>enviado por ${msg.remetente} em ${msg.id.split(' ')[0]}</small>
+                    </a>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', entryHtml);
+        });
+    } catch (error) {
+        console.error("Erro:", error);
+        container.innerHTML = '<p style="padding:10px;">Erro ao carregar mensagens. Tente atualizar a página.</p>';
     }
-  }
-
-  window.onload = carregarCaixaDeEntrada;
+}
+window.onload = carregarCaixaDeEntrada;
 </script>
 
 </body>

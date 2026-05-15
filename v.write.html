@@ -2,102 +2,94 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>ezrealm - escrever</title>
-  <link rel="stylesheet" href="style.css">
+  <title>ezrealm - Escrever</title>
+  <link id="themeStylesheet" rel="stylesheet" href="style.css">
   <script src="config.js"></script>
 </head>
 <body>
 
-<div class="page" style="height:auto;">
+<div class="page" style="max-height: 420px;">
 <div class="content-area">
-  <main class="layout">
 
+    <main class="layout">
     <aside class="left">
       <div class="box">
-        <h3>perfil</h3>
-        <img src="icon-dark.jpeg">
-        <strong><a href="#"> @beyond.you </a></strong>
-        <small>edu</small>
-        <hr>
-        <p><i>"find hope in the hopeless"</i><br>
-        <small><i>Online agora</i></small></p>
-      </div>
-      <div class="box">
-        <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
-      </div>
+            <h3>perfil</h3>
+            <a href="#">
+            <img src="icon-dark.jpeg">
+            </a>
+            <strong><a href="#"> @beyond.you </a></strong>
+            <small>edu</small>
+            <hr>
+            <p> <i> "find hope in the hopeless"</i>
+            <br><small> <i>Online agora</small></i></p>
+            </div>
+            <div class="box">
+            <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
+            </div>
     </aside>
 
     <section class="center">
-      <div class="box">
-        <h2>escreva a sua mensagem</h2>
-        <div style="padding:5px;">
-          <label style="font-size:10px;">de: (seu nick)</label><br>
-          <input type="text" id="campo-remetente" style="width:100%; margin-bottom:8px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;">
+        <div class="box">
+            <h2>escreva a sua mensagem</h2>
 
-          <label style="font-size:10px;">título da mensagem:</label><br>
-          <input type="text" id="campo-titulo" style="width:100%; margin-bottom:8px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px;">
+            <div style="padding: 5px;">
+                <label style="font-size: 10px;">de: (seu nick)</label><br>
+                <input type="text" id="campo-remetente" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
 
-          <label style="font-size:10px;">mensagem:</label><br>
-          <textarea id="campo-mensagem" rows="10" style="width:100%; margin-bottom:8px; background:#222; color:#b1b1b1; border:1px solid #8f90aa; padding:4px; resize:vertical; font-family:monospace;"></textarea>
+                <label style="font-size: 10px;">título da mensagem:</label><br>
+                <input type="text" id="campo-titulo" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
 
-          <button id="btn-enviar" onclick="prepararEnvio()">enviar carta</button>
-          <button onclick="window.location.href='inbox.html'">voltar</button>
-          <p id="status-envio" style="font-size:10px; margin-top:6px;"></p>
-        </div>
-      </div>
+                <label style="font-size: 10px;">mensagem: (pode usar tags html!)</label><br>
+                <textarea id="campo-mensagem" rows="10" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px; resize: vertical; font-family: monospace;"></textarea>
+
+                <button id="btn-enviar" onclick="prepararEnvio()">
+                    enviar carta
+                </button>
+                <button onclick="window.location.href='inbox.html';"> voltar </button>
+            </div>
+            </div>
+            <div class="box" style="height: 57px;"> [ vou arrumar isso aqui depois !] isso aqui é para enviar cartas para VOCê ! mas só eu que posso usar ! afinal não faz tanto sentindo vc enviar cartas para voce mesmo né :p <br> vou fazer a página para mandar carta de volta pra mim, em breve :D </div>
+
     </section>
-
-  </main>
+    </main>
 </div>
 </div>
 
 <script>
-  const API = window.MAILBOX_API || '';
-
-  async function prepararEnvio() {
-    const remetente = document.getElementById('campo-remetente').value.trim();
-    const titulo    = document.getElementById('campo-titulo').value.trim();
-    const mensagem  = document.getElementById('campo-mensagem').value.trim();
-    const btn       = document.getElementById('btn-enviar');
-    const status    = document.getElementById('status-envio');
-
-    if (!remetente || !titulo || !mensagem) {
-      status.textContent = 'ta faltando coisa fi';
-      return;
-    }
-
-    btn.textContent = 'enviando...';
-    btn.disabled = true;
-    status.textContent = '';
-
-    try {
-      const response = await fetch(API, {
+async function enviarMensagem(remetente, titulo, mensagem) {
+    await fetch(window.MAILBOX_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action:    'sendMessage',
-          remetente: remetente,
-          titulo:    titulo,
-          mensagem:  mensagem.replace(/\n/g, '<br>')
-        })
-      });
+        body: JSON.stringify({ action: 'sendMessage', remetente, titulo, mensagem })
+    });
+    alert("mensagem enviada :3");
+}
 
-      const result = await response.json();
-      if (result.success) {
-        status.textContent = 'mensagem enviada :3';
-        document.getElementById('campo-remetente').value = '';
-        document.getElementById('campo-titulo').value = '';
-        document.getElementById('campo-mensagem').value = '';
-      } else {
-        status.textContent = 'erro: ' + (result.error || 'tente novamente');
-      }
-    } catch (err) {
-      status.textContent = 'erro ao enviar. tente novamente.';
+async function prepararEnvio() {
+    const inputRemetente = document.getElementById('campo-remetente');
+    const inputTitulo = document.getElementById('campo-titulo');
+    const inputMensagem = document.getElementById('campo-mensagem');
+    const btnEnviar = document.getElementById('btn-enviar');
+
+    if (!inputRemetente.value || !inputTitulo.value || !inputMensagem.value) {
+        alert("ta faltando coisa fi");
+        return;
     }
 
-    btn.textContent = 'enviar carta';
-    btn.disabled = false;
-  }
+    btnEnviar.textContent = "enviando...";
+    btnEnviar.disabled = true;
+
+    let mensagemFormatada = inputMensagem.value.replace(/\n/g, '<br>');
+    await enviarMensagem(inputRemetente.value, inputTitulo.value, mensagemFormatada);
+
+    inputRemetente.value = '';
+    inputTitulo.value = '';
+    inputMensagem.value = '';
+
+    btnEnviar.textContent = "enviar carta";
+    btnEnviar.disabled = false;
+}
 </script>
 
 </body>
