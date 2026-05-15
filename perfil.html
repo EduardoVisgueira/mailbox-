@@ -134,7 +134,8 @@
         </p>
         <hr>
         <p style="text-align:center;"><i id="quote">"..."</i><br>
-        <small><i id="status">...</i></small></p>
+        <small><i id="status">...</i></small><br>
+        <small id="online-indicator" style="font-size:10px; color:#888;">● carregando...</small></p>
       </div>
 
       <div class="box">
@@ -222,8 +223,30 @@
 </div>
 
 <script>
+function tempoRelativo(ts) {
+  if (!ts) return null;
+  const diff = Math.floor((Date.now() - new Date(ts)) / 1000);
+  if (diff < 300)   return { texto: 'online agora',                          cor: '#80ff80' };
+  if (diff < 3600)  return { texto: `online há ${Math.floor(diff/60)} min`,  cor: '#888' };
+  if (diff < 86400) return { texto: `online há ${Math.floor(diff/3600)}h`,   cor: '#888' };
+  return              { texto: `online há ${Math.floor(diff/86400)}d`,        cor: '#888' };
+}
+
+function atualizarIndicador(ts) {
+  const el = document.getElementById('online-indicator');
+  const r = tempoRelativo(ts);
+  if (!r) { el.textContent = ''; return; }
+  el.textContent = '● ' + r.texto;
+  el.style.color = r.cor;
+}
+
 async function carregarPerfil() {
   const nickAlvo = new URLSearchParams(window.location.search).get('nick') || 'arataka';
+
+  const { data: { session } } = await window.db.auth.getSession();
+  if (session) {
+    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
+  }
 
   try {
     const { data: profiles, error } = await window.db.from('profiles').select('*');
@@ -254,6 +277,10 @@ async function carregarPerfil() {
     document.getElementById('bio').innerHTML = perfil.bio || 'sem descrição ainda...';
     document.getElementById('mood').textContent = perfil.mood || '∅ vazio';
     document.getElementById('member-since').textContent = perfil.member_since || '???';
+    const r = tempoRelativo(perfil.last_seen);
+    document.getElementById('last-login').textContent = r ? r.texto.replace('online ', '') : '???';
+    atualizarIndicador(perfil.last_seen);
+    setInterval(() => atualizarIndicador(perfil.last_seen), 30000);
     document.getElementById('now-playing').textContent = perfil.now_playing || 'silêncio absoluto...';
 
     preencherLista('favs-filmes', perfil.favs_filmes);

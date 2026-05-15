@@ -68,7 +68,7 @@
 <script>
 const tracks = [
   '2LKOHdMsL0K9KwcPRlJK2v',  // Mr.Kitty - After Dark
-  'COLE_ID_DA_HIM_AQUI'      // HIM - Join Me in Death
+  '089jl361OtZ6VpYvhgPiTS'  // HIM - Join Me in Death
 ];
 let currentTrack = 0;
 function updatePlayer() {
@@ -107,7 +107,7 @@ async function carregarSidebar(userId) {
     document.getElementById('sb-nick').textContent = perfil.nick || '';
     document.getElementById('sb-nome').textContent = perfil.nome || '';
     document.getElementById('sb-quote').textContent = `"${perfil.quote || ''}"`;
-    document.getElementById('sb-status').textContent = perfil.status || 'Online agora';
+    document.getElementById('sb-status').textContent = 'Online agora';
 }
 
 async function deletarMensagem(id, el) {
@@ -120,6 +120,10 @@ async function carregarCaixaDeEntrada() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
     currentUserId = session.user.id;
+    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
+    setInterval(() => {
+        window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUserId);
+    }, 60000);
     await carregarSidebar(session.user.id);
 
     const container = document.querySelector('.entries');

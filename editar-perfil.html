@@ -121,6 +121,7 @@ async function init() {
   const { data: { session } } = await window.db.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
   userId = session.user.id;
+  window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', userId);
 
   const { data: perfil } = await window.db.from('profiles').select('*').eq('id', userId).single();
   if (!perfil) return;

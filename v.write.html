@@ -93,6 +93,7 @@ async function prepararEnvio() {
 async function init() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
+    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
     const { data: perfil } = await window.db
         .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', session.user.id).single();
     if (!perfil) return;

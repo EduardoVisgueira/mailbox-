@@ -73,6 +73,7 @@ async function carregarSidebar(userId) {
 async function carregarCarta() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
+    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
     carregarSidebar(session.user.id);
 
     const id = new URLSearchParams(window.location.search).get('id');
