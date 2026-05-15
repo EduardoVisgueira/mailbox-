@@ -16,14 +16,12 @@
     <aside class="left">
       <div class="box">
             <h3>perfil</h3>
-            <a href="#">
-            <img src="icon-dark.jpeg">
-            </a>
-            <strong><a href="#"> @beyond.you </a></strong>
-            <small>edu</small>
+            <a href="#"><img id="sb-avatar" src="icon-dark.jpeg"></a>
+            <strong><a href="#" id="sb-nick">@...</a></strong>
+            <small id="sb-nome">...</small>
             <hr>
-            <p> <i> "find hope in the hopeless"</i>
-            <br><small> <i>Online agora</small></i></p>
+            <p><i id="sb-quote">"..."</i>
+            <br><small><i id="sb-status">Online agora</i></small></p>
             </div>
             <div class="box">
             <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
@@ -95,8 +93,14 @@ async function init() {
     const { data: { session } } = await window.db.auth.getSession();
     if (!session) { window.location.href = 'login.html'; return; }
     const { data: perfil } = await window.db
-        .from('profiles').select('nick').eq('id', session.user.id).single();
-    if (perfil) document.getElementById('campo-remetente').value = perfil.nick;
+        .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', session.user.id).single();
+    if (!perfil) return;
+    document.getElementById('campo-remetente').value = perfil.nick;
+    if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
+    document.getElementById('sb-nick').textContent   = perfil.nick || '';
+    document.getElementById('sb-nome').textContent   = perfil.nome || '';
+    document.getElementById('sb-quote').textContent  = `"${perfil.quote || ''}"`;
+    document.getElementById('sb-status').textContent = perfil.status || 'Online agora';
 }
 window.onload = init;
 </script>
