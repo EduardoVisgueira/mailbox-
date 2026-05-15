@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ezrealm - inbox</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
+</head>
+<body>
+
+<div class="page">
+<div class="content-area">
+  <main class="layout">
+
+    <aside class="left">
+      <div class="box">
+        <h3>perfil</h3>
+        <img src="icon-dark.jpeg">
+        <strong><a href="#"> @beyond.you </a></strong>
+        <small>edu</small>
+        <hr>
+        <p><i>"find hope in the hopeless"</i><br>
+        <small><i>Online agora</i></small></p>
+        <p><a href="perfil.html">visitar perfil [EM BREVE]</a></p>
+        <p><a href="v.write.html">enviar uma mensagem</a></p>
+      </div>
+      <div class="box">
+        <marquee>cut me open, leave me in tears</marquee>
+      </div>
+      <div class="box">
+        <img src="bg7.gif">
+      </div>
+      <div class="box" style="height:100px; text-align:center;">
+        <h3 style="margin-bottom:15px; text-align:left;">local time</h3>
+        <span id="relogio" style="font-family:monospace; font-size:20px; color:#fff; text-shadow:0 0 5px rgb(216,216,216);">00:00:00</span>
+        <script>
+          setInterval(() => {
+            document.getElementById('relogio').innerHTML = new Date().toLocaleTimeString();
+          }, 1000);
+        </script>
+      </div>
+    </aside>
+
+    <section class="center">
+      <div class="box">
+        <img src="h1.png">
+      </div>
+      <div class="box">
+        <strong>bem-vindo ao seu mailbox !!</strong>
+        <p>essa caixa de entrada para compartilhar algumas coisas! por enquanto tenho VÁRIAS coisas em andamento, mas só de fazer essa gambiarra funcionar já tá bom!! espero que goste :D</p>
+      </div>
+      <div class="box">
+        <h2>Mensagens</h2>
+        <div class="entries">
+          <p style="padding:10px;">Carregando mensagens...</p>
+        </div>
+      </div>
+      <div class="box">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2LKOHdMsL0K9KwcPRlJK2v?utm_source=generator&theme=0" width="100%" height="80px" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<script>
+  const API = window.MAILBOX_API || '';
+
+  async function carregarCaixaDeEntrada() {
+    const container = document.querySelector('.entries');
+    try {
+      const response = await fetch(API + '?action=messages');
+      if (!response.ok) throw new Error('erro na resposta');
+      const messages = await response.json();
+
+      if (!messages.length) {
+        container.innerHTML = '<p style="padding:10px;">Nenhuma mensagem encontrada.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      messages.forEach(msg => {
+        const data = msg.id.split(' ')[0];
+        container.insertAdjacentHTML('beforeend', `
+          <div class="entries-grid">
+            <img src="https://i.pinimg.com/736x/03/bb/ae/03bbaeaa9211660eaef61a01299c8b81.jpg" alt="">
+            <a href="mail.html?id=${encodeURIComponent(msg.id)}">
+              <h4>${msg.titulo}</h4>
+              <small>enviado por ${msg.remetente} em ${data}</small>
+            </a>
+          </div>
+        `);
+      });
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = '<p style="padding:10px;">Erro ao carregar mensagens. Tente atualizar a página.</p>';
+    }
+  }
+
+  window.onload = carregarCaixaDeEntrada;
+</script>
+
+</body>
+</html>

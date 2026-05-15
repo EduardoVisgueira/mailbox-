@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ezrealm - carta</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
+</head>
+<body>
+
+<div class="page" style="height:auto;">
+<div class="content-area">
+  <main class="layout2">
+
+    <aside class="left">
+      <div class="box">
+        <h3>perfil</h3>
+        <img src="icon-dark.jpeg">
+        <strong><a href="#"> @beyond.you </a></strong>
+        <small>edu</small>
+        <hr>
+        <p><i>"find hope in the hopeless"</i><br>
+        <small><i>Online agora</i></small></p>
+        <p><small>☆ <a href="inbox.html">voltar à inbox</a></small></p>
+      </div>
+      <div class="box">
+        <img src="bg7.gif">
+      </div>
+    </aside>
+
+    <section class="center">
+      <div class="mail">
+        <h3 id="email-titulo">carregando...</h3>
+        <div id="email-corpo" style="font-family:monospace; font-size:14px; color:#b1b1b1; padding:8px;">
+          ...
+        </div>
+      </div>
+    </section>
+
+    <aside class="left">
+      <div class="box">
+        <h3>enviado por</h3>
+        <img src="ezreal.jpg">
+        <strong><a href="#"> @arataka </a></strong>
+        <small>vi</small>
+        <hr>
+        <p><i>"higher, higher, to where the skies end"</i><br>
+        <small><i id="status-vi">Visto pela última vez hoje às 3:58</i></small></p>
+        <a href="v.write.html">mandar recado</a>
+      </div>
+    </aside>
+
+  </main>
+</div>
+</div>
+
+<script>
+  const API = window.MAILBOX_API || '';
+
+  async function carregarCarta() {
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (!id) return;
+
+    try {
+      const response = await fetch(API + '?action=messages');
+      const messages = await response.json();
+      const carta = messages.find(m => m.id === id);
+
+      if (carta) {
+        document.getElementById('email-titulo').textContent = carta.titulo;
+        document.getElementById('email-corpo').innerHTML = carta.conteudo;
+      } else {
+        document.getElementById('email-corpo').textContent = 'Carta não encontrada.';
+      }
+    } catch (err) {
+      document.getElementById('email-corpo').textContent = 'Erro ao carregar a carta. Tente novamente.';
+    }
+  }
+
+  window.onload = carregarCarta;
+</script>
+
+</body>
+</html>
