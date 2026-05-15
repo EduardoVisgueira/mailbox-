@@ -36,7 +36,8 @@
 
             <div style="padding: 5px;">
                 <label style="font-size: 10px;">de: (seu nick)</label><br>
-                <input type="text" id="campo-remetente" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
+                <input type="text" id="campo-remetente" list="lista-nicks" autocomplete="off" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
+                <datalist id="lista-nicks"></datalist>
 
                 <label style="font-size: 10px;">título da mensagem:</label><br>
                 <input type="text" id="campo-titulo" style="width: 100%; margin-bottom: 8px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
@@ -58,6 +59,17 @@
 </div>
 
 <script>
+async function carregarNicks() {
+    const { data: profiles } = await window.db.from('profiles').select('nick');
+    if (!profiles) return;
+    const datalist = document.getElementById('lista-nicks');
+    profiles.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.nick;
+        datalist.appendChild(opt);
+    });
+}
+
 async function enviarMensagem(remetente, titulo, mensagem) {
     const { error } = await window.db
         .from('messages')
@@ -90,6 +102,8 @@ async function prepararEnvio() {
     btnEnviar.textContent = "enviar carta";
     btnEnviar.disabled = false;
 }
+
+window.onload = carregarNicks;
 </script>
 
 </body>
