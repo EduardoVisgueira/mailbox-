@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ezrealm</title>
+  <link id="theme-style" rel="stylesheet" href="dark.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+
+<div class="page" style="height: auto;">
+<div class="content-area">
+
+    <main class="layout2">
+    <aside class="left">
+      <div class="box">
+            <h3>perfil</h3>
+            <a href="#"><img id="sb-avatar" src="img/icon-dark.jpeg"></a>
+            <strong><a href="#" id="sb-nick"> @... </a></strong>
+            <small id="sb-nome">...</small>
+            <hr>
+            <p><i id="sb-quote">"..."</i>
+            <br><small><i id="sb-status">Online agora</i></small></p>
+            </div>
+
+            <div class="box">
+            <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
+            </div>
+            </aside>
+
+      <section class="center">
+      <div class="mail">
+      <h3 id="email-titulo">carregando...</h3>
+
+      <aside class="left">
+      <p><small> ☆<a href="inbox.html"> voltar à página inicial</a>  </small></p>
+
+      <div id="email-corpo" style="font-family: monospace; font-size: 14px; color: #b1b1b1">
+        ...
+      </div>
+      </aside>
+      </div>
+      </section>
+
+       <div class="box">
+            <h3>enviado por</h3>
+            <a href="#"><img id="remetente-avatar" src="icon-dark.jpeg"></a>
+            <strong><a href="#" id="remetente-nick">@...</a></strong>
+            <small id="remetente-nome">...</small>
+            <hr>
+            <p><i id="remetente-quote">"..."</i>
+            <br><small><i id="remetente-status">...</i></small></p>
+            <a href="v.write.html">mandar recado</a>
+            </div>
+
+    </main>
+</div>
+</div>
+
+<script>
+async function carregarSidebar(userId) {
+    const { data: perfil } = await window.db
+        .from('profiles').select('nick,nome,quote,status,avatar_url').eq('id', userId).single();
+    if (!perfil) return;
+    if (perfil.avatar_url) document.getElementById('sb-avatar').src = perfil.avatar_url;
+    document.getElementById('sb-nick').textContent = perfil.nick || '';
+    document.getElementById('sb-nome').textContent = perfil.nome || '';
+    document.getElementById('sb-quote').textContent = `"${perfil.quote || ''}"`;
+    document.getElementById('sb-status').textContent = perfil.status || 'Online agora';
+}
+
+async function carregarCarta() {
+    const { data: { session } } = await window.db.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
+    carregarSidebar(session.user.id);
+
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (!id) return;
+
+    const { data: carta, error } = await window.db
+        .from('messages')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error || !carta) {
+        document.getElementById('email-corpo').textContent = 'Carta não encontrada.';
+        return;
+    }
+
+    document.getElementById('email-titulo').textContent = carta.titulo;
+    document.getElementById('email-corpo').innerHTML = carta.conteudo;
+
+    const { data: remetente } = await window.db
+        .from('profiles').select('nick,nome,quote,status,avatar_url')
+        .eq('nick', carta.remetente).single();
+    if (remetente) {
+        if (remetente.avatar_url) document.getElementById('remetente-avatar').src = remetente.avatar_url;
+        document.getElementById('remetente-nick').textContent = remetente.nick || '';
+        document.getElementById('remetente-nome').textContent = remetente.nome || '';
+        document.getElementById('remetente-quote').textContent = `"${remetente.quote || ''}"`;
+        document.getElementById('remetente-status').textContent = remetente.status || '';
+    } else {
+        document.getElementById('remetente-nick').textContent = carta.remetente;
+    }
+}
+window.onload = carregarCarta;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

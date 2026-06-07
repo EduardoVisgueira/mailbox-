@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ezrealm - perfil</title>
+  <link id="theme-style" rel="stylesheet" href="dark.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <style>
+    .perfil-banner {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      display: block;
+    }
+    .perfil-avatar {
+      width: 100%;
+      max-width: 160px;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #8f90aa;
+    }
+    .info-line {
+      font-size: 11px;
+      margin: 2px 0;
+      color: #c8c8c8;
+    }
+    .info-line b {
+      color: #ffffff;
+    }
+    .favs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      padding: 4px;
+    }
+    .fav-col {
+      border: 1px solid rgb(110, 110, 110);
+      background-color: rgb(32, 32, 32);
+      padding: 6px;
+      font-size: 10px;
+    }
+    .fav-col strong {
+      display: block;
+      color: #fff;
+      border-bottom: 1px dashed #8f90aa;
+      margin-bottom: 4px;
+      padding-bottom: 2px;
+      letter-spacing: 1px;
+    }
+    .fav-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .fav-col li {
+      margin: 2px 0;
+      color: #c8c8c8;
+    }
+    .fav-col li::before {
+      content: "✦ ";
+      color: #b03030;
+    }
+    .friends-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      padding: 4px;
+    }
+    .friend-card {
+      border: 1px solid rgb(110, 110, 110);
+      background-color: rgb(32, 32, 32);
+      padding: 4px;
+      text-align: center;
+      font-size: 10px;
+    }
+    .friend-card img {
+      width: 100%;
+      height: 60px;
+      object-fit: cover;
+    }
+    .friend-card a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .friend-card a:hover {
+      text-decoration: underline;
+      color: #ff8080;
+    }
+    .accent {
+      color: #b03030;
+    }
+    .mood-line {
+      background: rgb(32, 32, 32);
+      border: 1px solid rgb(110, 110, 110);
+      padding: 4px 6px;
+      font-size: 11px;
+      text-align: center;
+      color: #fff;
+    }
+    .blink {
+      animation: blink 1.2s steps(2, start) infinite;
+    }
+    @keyframes blink {
+      to { visibility: hidden; }
+    }
+    .wall-entry {
+      border: 1px solid rgb(110, 110, 110);
+      background-color: rgb(32, 32, 32);
+      padding: 6px;
+      margin: 3px 0;
+      font-size: 10px;
+    }
+    .wall-entry b {
+      color: #ff8080;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page" style="height: auto; min-height: 600px;">
+<div class="content-area">
+
+  <main class="layout">
+
+    <aside class="left">
+
+      <div class="box">
+        <h3>perfil</h3>
+        <img id="avatar" class="perfil-avatar" src="icon-dark.jpeg">
+        <p style="text-align:center; margin:6px 0;">
+          <strong><a href="#" id="nick">@...</a></strong><br>
+          <small id="nome">...</small>
+        </p>
+        <hr>
+        <p style="text-align:center;"><i id="quote">"..."</i><br>
+        <small><i id="status">...</i></small><br>
+        <small id="online-indicator" style="font-size:10px; color:#888;">● carregando...</small></p>
+      </div>
+
+      <div class="box">
+        <h3>★ stats</h3>
+        <p class="info-line"><b>member since:</b> <span id="member-since">--</span></p>
+        <p class="info-line"><b>último login:</b> <span id="last-login">agora</span></p>
+        <p class="info-line"><b>visitas:</b> <span id="visit-count" class="accent">000</span></p>
+      </div>
+
+      <div class="box">
+        <h3>♡ mood</h3>
+        <div class="mood-line" id="mood">--</div>
+      </div>
+
+      <div class="box">
+        <h3>♫ now playing</h3>
+        <marquee id="now-playing" scrollamount="3">silêncio absoluto...</marquee>
+      </div>
+
+      <div class="box">
+        <img src="https://animesher.com/orig/1/193/1932/19321/animesher.com_inuyasha-gif-red-1932172.gif">
+      </div>
+
+    </aside>
+
+    <section class="center">
+
+      <div class="box" style="padding:0;">
+        <img id="banner" class="perfil-banner" src="h1.png">
+      </div>
+
+      <div class="box">
+        <h2>† about me</h2>
+        <p id="bio" style="padding:6px; font-size:11px; line-height:1.5;">
+          carregando...
+        </p>
+      </div>
+
+      <div class="box">
+        <h2>✦ favoritos</h2>
+        <div class="favs-grid">
+          <div class="fav-col">
+            <strong>filmes</strong>
+            <ul id="favs-filmes"><li>--</li></ul>
+          </div>
+          <div class="fav-col">
+            <strong>músicas</strong>
+            <ul id="favs-musicas"><li>--</li></ul>
+          </div>
+          <div class="fav-col">
+            <strong>animes</strong>
+            <ul id="favs-animes"><li>--</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>★ top friends</h2>
+        <div class="friends-grid" id="friends-list">
+          <div class="friend-card"><small>carregando...</small></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>✝ wall</h2>
+        <div style="padding:5px;">
+          <div class="wall-entry">
+            <b>@sistema</b> escreveu: <br>
+            <small>o mural ainda tá em construção. em breve dá pra deixar recadinhos aqui! ✦</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="box" style="text-align:center;">
+        <small>☆ <a href="inbox.html">voltar à inbox</a> &nbsp;·&nbsp;
+        <a href="v.write.html">enviar carta</a> ☆
+        <span class="blink accent"> ♥</span></small>
+        <br><small style="color:#555; font-size:9px;">logado como <span id="logado-como" style="color:#8f90aa;">...</span></small>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+</div>
+
+<script>
+function tempoRelativo(ts) {
+  if (!ts) return null;
+  const diff = Math.floor((Date.now() - new Date(ts)) / 1000);
+  if (diff < 300)   return { texto: 'online agora',                          cor: '#80ff80' };
+  if (diff < 3600)  return { texto: `online há ${Math.floor(diff/60)} min`,  cor: '#888' };
+  if (diff < 86400) return { texto: `online há ${Math.floor(diff/3600)}h`,   cor: '#888' };
+  return              { texto: `online há ${Math.floor(diff/86400)}d`,        cor: '#888' };
+}
+
+function atualizarIndicador(ts) {
+  const el = document.getElementById('online-indicator');
+  const r = tempoRelativo(ts);
+  if (!r) { el.textContent = ''; return; }
+  el.textContent = '● ' + r.texto;
+  el.style.color = r.cor;
+}
+
+async function carregarPerfil() {
+  const nickAlvo = new URLSearchParams(window.location.search).get('nick') || 'arataka';
+
+  const { data: { session } } = await window.db.auth.getSession();
+  if (session) {
+    const { error: lsErr } = await window.db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', session.user.id);
+    if (lsErr) console.error('last_seen update failed:', lsErr.message);
+  }
+
+  try {
+    const { data: profiles, error } = await window.db.from('profiles').select('*');
+
+    if (error) {
+      document.getElementById('bio').textContent = 'erro: ' + error.message;
+      return;
+    }
+
+    const perfil = profiles.find(p =>
+      (p.nick || '').replace('@','').toLowerCase() === nickAlvo.toLowerCase()
+    );
+
+    if (!perfil) {
+      document.getElementById('bio').textContent = 'perfil não encontrado :(';
+      return;
+    }
+
+    document.title = `ezrealm - ${perfil.nick}`;
+    document.getElementById('nick').textContent = perfil.nick || '';
+    document.getElementById('nome').textContent = perfil.nome || '';
+    document.getElementById('quote').textContent = `"${perfil.quote || ''}"`;
+    document.getElementById('status').textContent = perfil.status || '';
+
+    if (perfil.avatar_url) document.getElementById('avatar').src = perfil.avatar_url;
+    if (perfil.banner_url) document.getElementById('banner').src = perfil.banner_url;
+
+    document.getElementById('bio').innerHTML = perfil.bio || 'sem descrição ainda...';
+    document.getElementById('mood').textContent = perfil.mood || '∅ vazio';
+    document.getElementById('member-since').textContent = perfil.member_since || '???';
+    const r = tempoRelativo(perfil.last_seen);
+    document.getElementById('last-login').textContent = r ? r.texto.replace('online ', '') : '???';
+    atualizarIndicador(perfil.last_seen);
+    setInterval(() => atualizarIndicador(perfil.last_seen), 30000);
+    document.getElementById('now-playing').textContent = perfil.now_playing || 'silêncio absoluto...';
+
+    preencherLista('favs-filmes', perfil.favs_filmes);
+    preencherLista('favs-musicas', perfil.favs_musicas);
+    preencherLista('favs-animes', perfil.favs_animes);
+
+    const visitKey = 'visits_' + nickAlvo.toLowerCase();
+    let visits = parseInt(localStorage.getItem(visitKey) || '0') + 1;
+    localStorage.setItem(visitKey, visits);
+    document.getElementById('visit-count').textContent = String(visits).padStart(3, '0');
+
+    if (session) {
+      const meuPerfil = profiles.find(p => p.id === session.user.id);
+      if (meuPerfil) document.getElementById('logado-como').textContent = meuPerfil.nick || session.user.email;
+    }
+
+    montarAmigos(profiles, nickAlvo);
+
+  } catch (err) {
+    document.getElementById('bio').textContent = 'erro ao carregar perfil. tenta de novo.';
+    console.error(err);
+  }
+}
+
+function preencherLista(elId, raw) {
+  const el = document.getElementById(elId);
+  if (!raw) { el.innerHTML = '<li>--</li>'; return; }
+  const itens = raw.split(',').map(s => s.trim()).filter(Boolean);
+  el.innerHTML = itens.map(i => `<li>${i}</li>`).join('');
+}
+
+function montarAmigos(profiles, nickAtual) {
+  const container = document.getElementById('friends-list');
+  const outros = profiles.filter(p =>
+    (p.nick || '').replace('@','').toLowerCase() !== nickAtual.toLowerCase()
+  );
+  if (!outros.length) {
+    container.innerHTML = '<div class="friend-card"><small>sem amigos ainda...</small></div>';
+    return;
+  }
+  container.innerHTML = outros.map(p => `
+    <div class="friend-card">
+      <a href="perfil.html?nick=${encodeURIComponent((p.nick || '').replace('@',''))}">
+        <img src="${p.avatar_url || 'icon-dark.jpeg'}">
+        <br>${p.nick || ''}
+      </a>
+    </div>
+  `).join('');
+}
+
+window.onload = carregarPerfil;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

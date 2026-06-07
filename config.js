@@ -1,0 +1,3 @@
+const _SB_URL = 'https://esmhyhdorrveilmjqnrz.supabase.co';
+const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzbWh5aGRvcnJ2ZWlsbWpxbnJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4MDYzOTEsImV4cCI6MjA5NDM4MjM5MX0.bOxoOsGNcwHziw0_2EMFjBiLprBWksE6npRGkZGBjDE';
+window.db = supabase.createClient(_SB_URL, _SB_KEY);

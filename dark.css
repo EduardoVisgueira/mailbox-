@@ -1,0 +1,397 @@
+
+* {
+  box-sizing: border-box;
+  font-family: Verdana, Arial, sans-serif;
+  color: #b1b1b1;
+}
+
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.045) 0px,
+      rgba(255, 255, 255, 0.045) 1px,
+      rgba(0, 0, 0, 0.16) 2px,
+      rgba(0, 0, 0, 0.16) 4px
+    );
+
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+}
+
+body {
+  background-image: url("img/bg7.gif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page {
+  position: relative;
+  margin: 0 auto;
+  width: 800px;
+  height: 860px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+
+}
+
+button {
+  background: linear-gradient(0deg,rgb(22, 22, 22) 0%, rgb(65, 65, 65) 100%); color: white; 
+  border: 1px solid #8f90aa; 
+  padding: 5px 15px; 
+  cursor: pointer; 
+  font-family: Verdana; 
+  font-size: 10px; 
+  border-radius: 3px;
+}
+
+.content-area {
+  position: relative;
+  flex: 1;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 22% 78%;
+  gap: 2px;
+  padding: 2px;
+  background: black;
+
+}
+
+.layout2 {
+  display: grid;
+  grid-template-columns: 22% 60% 18%;
+  gap: 2px;
+  padding: 2px;
+  background: black;
+
+}
+
+a {
+color: rgb(233, 233, 233);
+text-decoration: underline;
+}
+
+.border {
+  border: 20px solid transparent;
+  border-image-source: url("https://64.media.tumblr.com/1e386b4e10a1362fd411eda95058dad4/11a43739b8113adf-9a/s250x400/90186d30f6127f4cb40010d4a6fd76eabbfdba28.gif");
+  border-image-slice: 38;
+  border-image-repeat: round;
+
+  position: relative;
+  margin: 0 auto;
+  width: 850px;
+  height: 900px;
+  padding: 0;
+
+  overflow: visible;
+}
+.box {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background: linear-gradient(178deg,rgb(71, 71, 71) 0%, rgb(37, 37, 37) 100%);
+  padding: 5px;
+  font-size: 11px;
+  margin: 3px;
+  color: white;
+  height: auto;
+
+}
+
+.logs {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background: linear-gradient(178deg,rgb(71, 71, 71) 0%, rgb(37, 37, 37) 100%);
+  padding: 4px;
+  font-size: 11px;
+  margin: 3px;
+  color: white;
+  height: 190px;
+
+}
+.banner {
+  position: relative;
+
+  height: 120px;
+  padding: 4px;
+  margin: 0;
+
+  color: white;
+  background-color: black;
+  background-image:
+    linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.72)),
+    url("https://i.pinimg.com/736x/52/7c/14/527c140e4f408da8eaf353c0c433f4b7.jpg");
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  border-bottom: 2px solid #0a0610;
+}
+
+.banner h1 {
+  position: absolute;
+  left: 5px;
+  bottom: -20px;
+
+  margin: 0;
+
+  font-family: "UnifrakturCook", serif;
+  font-size: 85px;
+  color: #ded6e8;
+
+  text-shadow:
+    2px 2px 0 #000,
+    4px 4px 0 #1a0e24;
+}
+
+#sb-avatar {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  display: block;
+}
+
+.pfp {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  height: auto;
+}
+.box h2,
+.box h3,
+.logs h3,
+.mail h3 {
+ background: linear-gradient(0deg,rgb(22, 22, 22) 0%, rgb(65, 65, 65) 100%);
+  margin: -4px -4px 4px -4px;
+  padding: 2px 2px 2px;
+  font-size: 12px;
+  color: white;
+}
+
+.mail {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background: linear-gradient(178deg,rgb(71, 71, 71) 0%, rgb(37, 37, 37) 100%);
+  padding: 4px;
+  font-size: 11px;
+  margin: 3px;
+  color: white;
+  height: auto;
+  overflow-y: scroll;
+  max-height: 400px;
+
+}
+
+.left, .right {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+img {
+  max-height: 1000px;
+  width: auto;
+  max-width: 100%;
+}
+
+
+.center {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.menu-img{
+  float: left;
+  width: 100px;
+}
+.entries {
+  gap: 1px;
+  overflow-y: scroll;
+  max-height: 250;
+}
+.entries-grid {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  margin: 3px;
+  align-items: left;
+  font-size: 11px;
+  border: 1px rgb(110, 110, 110) solid;
+  padding: 5px;
+  grid-template-columns:52px 1fr;
+  border:1px solid #393541;
+  border-radius:6px;
+  background:
+  linear-gradient(90deg,rgba(74,49,79,.35),transparent 35%),
+  linear-gradient(180deg,#191820,#0d0d11);
+  transition:.15s ease;
+}
+
+.entries-grid:hover{
+  border-color:#a774eb;
+}
+
+.entries-grid img {
+  height: 70px;
+  width: 80px;
+  padding: 5px;
+  margin-right: 10px;
+  content: url("img/files-dark.png");
+}
+
+.entries-grid h4 {
+  font-weight: bold;
+  margin: 0 0 4px 0;
+  font-size: 11px;
+}
+
+.entries-grid h4:hover{
+  color: rgb(134, 79, 197);
+
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #525252;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b9b9b9;
+
+}
+
+
+
+/* ===== Gothic Neocities Refresh ===== */
+
+:root {
+  --bg-black: #050505;
+  --bg-1: #0b0b0f;
+  --bg-2: #15151b;
+  --text: #d6d3dd;
+  --muted: #9a94a8;
+  --border: #575163;
+  --border-light: #8a819b;
+  --purple-dark: #25172b;
+  --purple-glow: rgba(104,68,122,.45);
+}
+
+body{
+  background-color:#000;
+  background-blend-mode:multiply;
+}
+
+.page{
+  background:linear-gradient(180deg,#101014,#050505);
+ 
+}
+
+.layout,.layout2{
+  gap:4px;
+  padding:5px;
+  background:linear-gradient(90deg,#000,#111017,#000);
+}
+
+.box,.mail,.logs{
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:
+  linear-gradient(180deg,rgba(255,255,255,.05),transparent 18%),
+  linear-gradient(178deg,#26242d 0%,#111116 58%,#09090c 100%);
+  box-shadow:inset 0 0 16px rgba(0,0,0,.55);
+  padding:6px;
+}
+
+.deco {
+  position: relative;
+  background-image: url("https://i.makeagif.com/media/6-30-2021/_L34mj.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 4px;
+  font-size: 11px;
+  margin: 20px;
+  height: 128px;
+}
+
+.deco::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: url("https://64.media.tumblr.com/17d2e62f810be25db790bec6b1bf7b07/43337e2a76fbb90e-45/s640x960/c7dc7003e9765d3fd701553b0fe3d74b37774e89.pnj");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.floatie {
+  position: absolute;
+  z-index: 9999;
+  content: url("https://64.media.tumblr.com/c8159efe7c36056b773a8e3666c9ae6b/1799f20c3590cd3e-e5/s540x810/b50595917bdc22ddccdd06b37c793d8589693cd0.gifv");
+  width: 130px;
+  top: -10px;
+  right: -10px;
+}
+
+
+.box h2,.box h3,.mail h3{
+  margin:-6px -6px 6px -6px;
+  padding:4px 7px;
+  border-bottom:1px solid var(--border);
+  border-radius:6px 6px 0 0;
+  background:linear-gradient(90deg,var(--purple-dark),#16151c 55%,#08080b);
+  letter-spacing:1px;
+  text-shadow:0 0 5px var(--purple-glow);
+}
+
+
+
+#sb-avatar {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  display: block;
+}
+a{
+  text-decoration:none;
+  border-bottom:1px dotted #6e627a;
+}
+
+a:hover{
+  text-shadow:0 0 6px var(--purple-glow);
+  color: rgb(134, 79, 197);
+
+}
+
+
+::-webkit-scrollbar-track{
+  background:#0a0a0d;
+}
+
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#6b5c78,#2a2230);
+  border-radius:8px;
+}

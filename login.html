@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ezrealm - login</title>
+  <link id="themeStylesheet" rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+
+<div class="page" style="height: auto; overflow-y: visible;">
+<div class="content-area">
+
+  <main class="layout">
+    <aside class="left">
+      <div class="box" style="text-align:center;">
+        <h3>mailbox</h3>
+        <hr>
+        <p style="font-size:20px; letter-spacing:4px; color:#b03030;">✦ ✝ ✦</p>
+        <p style="font-size:10px;"><i>"se você só seguir em frente, não vai ver o que ficou pra trás"</i></p>
+      </div>
+      <div class="box">
+        <img src="https://i.pinimg.com/originals/19/2e/f5/192ef5875bec05b17d61656ad416d301.gif">
+      </div>
+    </aside>
+
+    <section class="center" style="justify-content: center;">
+      <div class="box" style="margin-top: auto; margin-bottom: auto;">
+        <h2>✦ entrar</h2>
+        <div style="padding: 5px;">
+          <label style="font-size: 10px;">email:</label><br>
+          <input type="email" id="campo-email" style="width: 100%; margin-bottom: 6px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
+          <label style="font-size: 10px;">senha:</label><br>
+          <input type="password" id="campo-senha" style="width: 100%; margin-bottom: 6px; background: #222; color: #b1b1b1; border: 1px solid #8f90aa; padding: 4px;">
+          <button id="btn-entrar" onclick="fazerLogin()">entrar</button>
+          <span id="msg-erro" style="font-size: 10px; color: #ff6060; margin-left: 8px;"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</div>
+</div>
+
+<script>
+async function fazerLogin() {
+  const email = document.getElementById('campo-email').value;
+  const senha = document.getElementById('campo-senha').value;
+  const btn = document.getElementById('btn-entrar');
+  const erro = document.getElementById('msg-erro');
+
+  if (!email || !senha) { erro.textContent = 'preenche tudo fi'; return; }
+
+  btn.textContent = 'entrando...';
+  btn.disabled = true;
+  erro.textContent = '';
+
+  const { error } = await window.db.auth.signInWithPassword({ email, password: senha });
+
+  if (error) {
+    erro.textContent = 'email ou senha errados :(';
+    btn.textContent = 'entrar';
+    btn.disabled = false;
+    return;
+  }
+
+  window.location.href = 'inbox.html';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerLogin();
+});
+
+// se já tiver logado, vai direto pra inbox
+window.db.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = 'inbox.html';
+});
+</script>
+
+</body>
+</html>

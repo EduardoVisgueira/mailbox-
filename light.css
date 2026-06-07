@@ -1,0 +1,366 @@
+* {
+  box-sizing: border-box;
+  font-family: Verdana, Arial, sans-serif;
+}
+
+
+body {
+  background-image: url("https://i.postimg.cc/s28F1BHx/3182147.png");
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.disk {
+width: 150px;
+height: 150px;
+object-fit: cover;
+-webkit-mask-image: url(https://i.postimg.cc/3RYpcLqS/14.png);
+-webkit-mask-size: 100%;
+-webkit-mask-repeat: no-repeat;
+-webkit-mask-position: center;
+animation-duration: 3s;
+animation-iteration-count: infinite;
+content: url("https://i.pinimg.com/1200x/97/05/18/970518b0f477f485dd885ef59ed5f261.jpg");
+}
+
+.disk {
+        animation-name: spin;
+        animation-timing-function: linear;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg) }
+        to { transform: rotate(360deg) }
+    }
+
+
+.page {
+  position: relative;
+  margin: 0 auto;
+  width: 800px;
+  height: 900px;
+  overflow-y: hidden;
+  display: flex;
+  overflow-x: hidden;
+  flex-direction: column;
+  border: 20px solid transparent;
+  border-image-source: url("https://file.garden/Z4-KIXj5okOfzeyR/borders/30.gif");
+  border-image-slice: 20;
+  border-image-repeat: round;
+
+  padding: 0px;
+  background-image: url("https://64.media.tumblr.com/2379d21049df8cb3f6ad59bddbafb8dc/78b9d1fb85588eb2-6f/s75x75_c1/c1eb5350ee135311b0fda9337df0039a435cb7f9.gif");
+}
+  
+
+
+button {
+  background: linear-gradient(0deg,rgb(209, 74, 114) 0%, rgb(255, 181, 233) 100%); color: white; 
+  border: 1px solid #a80e56; 
+  padding: 5px 15px; 
+  cursor: pointer; 
+  font-family: Verdana; 
+  font-size: 10px; 
+  border-radius: 3px;
+  width: 100%;
+  
+}
+
+button a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+
+
+
+
+}
+.content-area {
+  position: relative;
+  flex: 1;
+}
+
+
+.layout {
+  display: grid;
+  grid-template-columns: 22% 78%;
+  gap: 2px;
+  padding: 2px;
+
+}
+
+.floatie {
+  position: absolute;
+  z-index: 9999;
+  content: url("https://i.postimg.cc/Vkfyqr42/multi-multi-hmx-12.gif");
+  width: 130px;
+  top: -10px;
+  right: -10px;
+}
+.layout2 {
+  display: grid;
+  grid-template-columns: 22% 60% 18%;
+  gap: 2px;
+  padding: 2px;
+  background: black;
+
+}
+
+a {
+  color: #e84f9a;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: rgb(132, 210, 255);
+  text-decoration: underline wavy;
+}
+
+
+.box {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background: linear-gradient(178deg,rgb(255, 247, 247) 0%, rgb(255, 255, 255) 100%);
+  padding: 4px;
+  font-size: 11px;
+  margin: 3px;
+  color: black;
+  height: auto;
+
+  border-width:7px;
+  border-style:solid;
+  border-image: url("https://i.postimg.cc/Y9yHKnnC/qsrn1x.png") 8 fill round;
+  overflow-y:auto;
+ 
+
+
+}
+
+.logs {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background: linear-gradient(178deg,rgb(255, 247, 247) 0%, rgb(255, 255, 255) 100%);
+  padding: 4px;
+  font-size: 11px;
+  margin: 3px;
+  color: black;
+  height: 200px;
+  overflow-y: scroll;
+
+  border-width:7px;
+  border-style:solid;
+  border-image: url("https://i.postimg.cc/Y9yHKnnC/qsrn1x.png") 8 fill round;
+  overflow-y:auto;
+ 
+
+
+}
+
+#sb-avatar {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  display: block;
+}
+
+.pfp {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  height: auto;
+}
+
+
+
+.deco {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+    background-image: url("https://64.media.tumblr.com/66d3c3096ba5e9f214380a85a192411a/97539a701df40e19-4d/s250x400/315281c9b498db3ddc3eb02515bf1c06e0b6422d.pnj");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 4px;
+  font-size: 11px;
+  margin: 3px;
+  color: white;
+  height: 128px;
+  border-width:7px;
+  border-style:solid;
+  border-image: url("https://foollovers.com/mat/baf/flower/fl32-005-d.gif") 7  round;
+
+
+
+}
+
+.deco-small {
+  background-image: url("https://i.pinimg.com/1200x/d2/57/9a/d2579afb07c4443add6b8802b73a3313.jpg");
+  background-position: center;
+  background-size: 120px;
+  padding: 0px;
+  font-size: 11px;
+  margin: 0px;
+  color: white;
+  height: 30px;
+  
+
+
+}
+.banner {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background-image: url(img/h2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 4px;
+  margin: 0px;
+  color: white;
+  height: 120px;
+
+}
+
+.banner h1 {
+  position: absolute;
+  left: 0px;
+  bottom: -20px;
+  margin: 0;
+  font-size: 72px;
+  font-family: Georgia, serif;
+  color: #ffffff;
+
+  text-shadow:
+    2px 2px 0 rgba(255,255,255,0.4),
+    4px 4px 8px rgba(0,0,0,0.15);
+}
+
+
+
+hr {
+  border: none;             /* Removes the default shaded border */
+  height: 1px;              /* Sets the thickness of the line */
+  background-color: #52df7c; /* Changes the line color (e.g., Blue) */
+}
+
+
+.box h2,
+.box h3,
+.logs h3,
+.mail h3 {
+ background: linear-gradient(0deg,rgb(209, 74, 114) 0%, rgb(255, 181, 233) 100%);
+ border-radius: 5px;
+  margin: -4px -4px 4px -4px;
+  padding: 2px 2px 2px;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+}
+
+.mail {
+  position: relative;
+  border: 2px solid #8f90aa;
+  border-style: groove;
+  background: linear-gradient(178deg,rgb(71, 71, 71) 0%, rgb(37, 37, 37) 100%);
+  padding: 4px;
+  font-size: 11px;
+  margin: 3px;
+  color: white;
+  height: auto;
+  overflow-y: scroll;
+  max-height: 400px;
+
+}
+
+.left, .right {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+img {
+  max-height: 1000px;
+  width: auto;
+  max-width: 100%;
+}
+
+#sb-avatar {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  display: block;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.menu-img{
+  float: left;
+  width: 100px;
+}
+.entries {
+  gap: 1px;
+  overflow-y: scroll;
+  max-height: 500px;
+  color: rgb(0, 0, 0);
+}
+
+.entries a{
+    color: rgb(255, 72, 158);
+    text-decoration: none;
+}
+
+.entries-grid {
+  display: grid;
+  grid-template-columns: 15% 85%;
+  margin: 3px;
+  align-items: left;
+  padding: 3px;
+  font-size: 11px;
+  background-color: rgb(255, 247, 251);
+  padding: 5px;
+  border-width:7px;
+  border: rgb(255, 181, 212) 2px dashed;
+}
+
+.entries-grid-img {
+  height: 70px;
+  width: 80px;
+  padding: 5px;
+  margin-right: 10px;
+  content: url("https://i.pinimg.com/736x/7d/89/b7/7d89b757d528e3e10821219b307d18bb.jpg");
+
+  
+}
+
+.entries-grid h4 {
+  font-weight: bold;
+  margin: 0 0 4px 0;
+  font-size: 11px;
+}
+
+.entries-grid h4:hover{
+  color: rgb(132, 210, 255);
+  text-decoration: underline wavy;
+
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffe4f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #df92bf;
+
+}
+
