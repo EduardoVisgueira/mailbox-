@@ -260,18 +260,23 @@ hr {
   color: rgb(255, 255, 255);
 }
 
-.mail {
+.box {
   position: relative;
   border: 2px solid #8f90aa;
   border-style: groove;
-  background: linear-gradient(178deg,rgb(71, 71, 71) 0%, rgb(37, 37, 37) 100%);
+  background: linear-gradient(178deg,rgb(255, 247, 247) 0%, rgb(255, 255, 255) 100%);
   padding: 4px;
   font-size: 11px;
   margin: 3px;
-  color: white;
+  color: black;
   height: auto;
-  overflow-y: scroll;
-  max-height: 400px;
+
+  border-width:7px;
+  border-style:solid;
+  border-image: url("https://i.postimg.cc/Y9yHKnnC/qsrn1x.png") 8 fill round;
+  overflow-y:auto;
+ 
+
 
 }
 
